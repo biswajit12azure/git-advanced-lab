@@ -56,13 +56,15 @@ jobs:
 
       - name: Package artifact
         run: |
-          tar -czf app.tar.gz app.py
+          mkdir build
+          cp app.py requirements.txt build/
+          tar -czf app.tar.gz build/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-artifact
-          path: app.tar.gz
+          name: app-artifact-flask
+          path: flask-app.tar.gz
 
   deploy-dev:
       runs-on: ubuntu-latest
