@@ -183,6 +183,3 @@ Maintained by:
 Biswajit Dash
 DevOps / Cloud / DevSecOps Engineer
 CI/CD | Kubernetes | Security Automation
-Maintained by:
-DevOps / Cloud / DevSecOps Engineer
-CI/CD | Kubernetes | Security Automation
