@@ -1,6 +1,6 @@
 # 🚀 Git Advanced Lab – Python CI/CD & DevSecOps
 
-This repository demonstrates an **end-to-end CI/CD and DevSecOps pipeline** for a **Python application** using **GitHub Actions**, integrated with **code quality checks, security scanning**, and **Kubernetes deployment manifests**.
+This repository demonstrates an **end-to-end CI/CD and DevSecOps pipeline** for a **Python application** using **GitHub Actions**, with integrated **security scanning (Bandit & CodeQL)**, **Docker containerization**, and **Kubernetes deployment manifests**.
 
 It is designed as a **hands-on lab** to understand **advanced Git workflows, CI/CD automation, and DevSecOps best practices**.
 
@@ -8,11 +8,12 @@ It is designed as a **hands-on lab** to understand **advanced Git workflows, CI/
 
 ## 📌 Repository Objectives
 
-- Implement CI/CD for a Python application  
+- Implement CI/CD for a Python application using GitHub Actions  
 - Practice advanced Git operations  
-- Integrate DevSecOps tools (SonarQube, CodeQL)  
-- Apply containerization and Kubernetes deployment  
-- Demonstrate **shift-left security** in pipelines  
+- Integrate DevSecOps tools (Bandit, CodeQL)  
+- Apply Docker-based containerization  
+- Deploy applications using Kubernetes manifests  
+- Demonstrate **shift-left security** in CI pipelines  
 
 ---
 
@@ -21,40 +22,17 @@ It is designed as a **hands-on lab** to understand **advanced Git workflows, CI/
 ```text
 git-advanced-lab/
 │
-├── app/                      # Python application source code
-│   ├── app.py
-│   └── requirements.txt
-│
-├── tests/                    # Unit test cases
-│
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml            # CI pipeline (build, test, scan)
-│       ├── codeql.yml        # CodeQL security analysis
-│       └── sonar.yml         # SonarQube scan
+│       ├── CI.yml              # Main CI pipeline
+│       └── bandit/             # Bandit security scan config/artifacts
 │
-├── k8s/                      # Kubernetes manifests
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   └── ingress.yaml
+├── kubernetes/                 # Kubernetes deployment manifests
 │
-├── Dockerfile                # Containerization
-├── sonar-project.properties  # SonarQube configuration
-├── .gitignore
-└── README.md
+├── tests/                      # Unit test cases
+│
+├── app.py                      # Python application entry point
+├── requirements.txt            # Python dependencies
+├── Dockerfile                  # Docker image definition
+└── README.md                   # Project documentation
 
-
-🤝 Contributing
-
-Contributions are welcome!
-Feel free to fork this repository, raise issues, or submit pull requests.
-
-📜 License
-
-This project is licensed under the MIT License.
-
-👨‍💻 Author
-Maintained by:
-Biswajit Dash
-DevOps / Cloud / DevSecOps Engineer
-CI/CD | Kubernetes | Security Automation
