@@ -1,0 +1,17 @@
+# daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: logging-agent
+spec:
+  selector:
+    matchLabels:
+      name: logging-agent
+  template:
+    metadata:
+      labels:
+        name: logging-agent
+    spec:
+      containers:
+        - name: fluentd
+          image: fluent/fluentd
