@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/YOUR_ORG/git-advanced-lab.git
+    repoURL: https://github.com/biswajit12azure/git-advanced-lab.git
     targetRevision: main
     path: helm/python-app
     helm:
@@ -24,3 +24,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
