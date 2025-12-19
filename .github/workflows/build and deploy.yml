@@ -1,0 +1,100 @@
+name: 🛡️ Python Build and Deploy to Kubernetes
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  build-and-deploy:
+    name: Build Docker Image and Deploy to Minikube
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- Install Minikube ---
+      - name: Install Minikube
+        run: |
+          curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          chmod +x minikube
+          sudo mv minikube /usr/local/bin/
+
+      # --- Start Minikube with Docker driver ---
+      - name: Start Minikube
+        run: |
+          minikube start --driver=docker
+          minikube status
+
+      # --- Use Minikube’s internal Docker engine ---
+      - name: Configure Docker for Minikube
+        run: |
+          eval $(minikube docker-env)
+
+      # --- Build Docker image inside Minikube ---
+      - name: Build Docker image inside Minikube
+        run: |
+          eval $(minikube docker-env)
+          docker build -t my-python-app:latest .
+
+      # --- Ensure namespace exists ---
+      - name: Create namespace
+        run: |
+          kubectl create namespace my-namespace --dry-run=client -o yaml | kubectl apply -f -
+
+      # --- Deploy Kubernetes manifests ---
+      - name: Deploy manifests
+        run: |
+          kubectl apply -f k8s/deployment.yaml -n my-namespace
+          kubectl apply -f k8s/service.yaml -n my-namespace
+
+      # --- Verify deployment ---
+      - name: Verify deployment
+        run: |
+          kubectl get all -n my-namespace
+          kubectl rollout status deployment/my-python-app -n my-namespace
+
+      # --- Verify deployment ---
+      - name: Verify Kubernetes Deployment
+        run: |
+         kubectl get pods -n my-namespace
+         kubectl logs deploy/my-python-app -n my-namespace
+
+      # --- Port Forward ---
+      - name: Port Forward service
+        run: |
+         kubectl port-forward svc/my-python-app -n my-namespace 8080:80 &
+         sleep 5
+
+     # --- Test App ---
+      - name: Test service endpoint
+        run: curl -I http://localhost:8080
+
+     # --- Prepare ZAP output folder ---
+      - name: Prepare ZAP output folder
+        run: mkdir -p zap-output && chmod a+rw zap-output
+        
+     # --- OWASP ZAP Scan ---
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+         target: "http://localhost:8080"
+         output_folder: "./zap-output"
+        continue-on-error: true
+
+     # --- Upload ZAP Reports ---
+      - name: Upload ZAP Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-scan
+          path: zap-output/*
+
+          
+
