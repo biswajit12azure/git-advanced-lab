@@ -59,18 +59,18 @@ jobs:
       - name: Verify deployment
         run: |
           kubectl get all -n my-ns
-          kubectl rollout status deployment/my-python-app -n my-ns
+          kubectl rollout status deployment/nginx-deployment -n my-ns
 
       # --- Verify deployment ---
       - name: Verify Kubernetes Deployment
         run: |
          kubectl get pods -n my-ns
-         kubectl logs deploy/my-python-app -n my-ns
+         kubectl logs deploy/nginx-deployment -n my-ns
 
       # --- Port Forward ---
       - name: Port Forward service
         run: |
-         kubectl port-forward svc/my-python-app -n my-ns 8080:80 &
+         kubectl port-forward svc/nginx-service -n my-ns 8080:80 &
          sleep 5
 
      # --- Test App ---
