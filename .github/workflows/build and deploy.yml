@@ -47,30 +47,30 @@ jobs:
       # --- Ensure namespace exists ---
       - name: Create namespace
         run: |
-          kubectl create namespace my-namespace --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create namespace my-ns --dry-run=client -o yaml | kubectl apply -f -
 
       # --- Deploy Kubernetes manifests ---
       - name: Deploy manifests
         run: |
-          kubectl apply -f k8s/deployment.yaml -n my-namespace
-          kubectl apply -f k8s/service.yaml -n my-namespace
+          kubectl apply -f k8s/deployment.yaml -n my-ns
+          kubectl apply -f k8s/service.yaml -n my-ns
 
       # --- Verify deployment ---
       - name: Verify deployment
         run: |
-          kubectl get all -n my-namespace
-          kubectl rollout status deployment/my-python-app -n my-namespace
+          kubectl get all -n my-ns
+          kubectl rollout status deployment/my-python-app -n my-ns
 
       # --- Verify deployment ---
       - name: Verify Kubernetes Deployment
         run: |
-         kubectl get pods -n my-namespace
-         kubectl logs deploy/my-python-app -n my-namespace
+         kubectl get pods -n my-ns
+         kubectl logs deploy/my-python-app -n my-ns
 
       # --- Port Forward ---
       - name: Port Forward service
         run: |
-         kubectl port-forward svc/my-python-app -n my-namespace 8080:80 &
+         kubectl port-forward svc/my-python-app -n my-ns 8080:80 &
          sleep 5
 
      # --- Test App ---
