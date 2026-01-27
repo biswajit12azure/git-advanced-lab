@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return jsonify({"message": "Succesfully deploy Python App using Github Actions into EC2 Instance"})
+    return jsonify({"message": "Succesfully deploy Python App using Github Actions and Dockerhub into EC2 Instance"})
 
 
 @app.route('/add', methods=['POST'])
