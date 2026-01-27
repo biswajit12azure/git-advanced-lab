@@ -13,16 +13,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t python-demo .
+      - name: Copy code to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "."
+          target: "/home/ubuntu/app"
 
-      - name: Deploy to EC2
+      - name: Build & Run on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
+            cd /home/ubuntu/app
             docker stop python-demo || true
             docker rm python-demo || true
+            docker build -t python-demo .
             docker run -d -p 80:5000 --name python-demo python-demo
+
