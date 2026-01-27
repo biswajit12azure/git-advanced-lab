@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   ci:
-    runs-on: windows-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
